@@ -1,0 +1,11 @@
+# Xcode
+DerivedData/
+build/
+xcuserdata/
+
+# macOS
+.DS_Store
+
+# Project-specific
+CLAUDE.md
+output/*.ppm
