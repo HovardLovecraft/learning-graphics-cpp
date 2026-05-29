@@ -15,10 +15,20 @@
 
 int main(int argc, const char * argv[]) {
     
-    const int imageWidth{80};
-    const int imageHeight{60};
+    const int imageWidth{800};
+    const int imageHeight{600};
+    const double ambient = 0.25;
+    const double shadowAcne = 0.001;
     const Camera cam{Vec3{0.0, 0.0, 1.5}, 3.0, 3.0, 3.0};
-    const Sphere sphere{Vec3{0.0, 0.0, -5.0}, 1.0};
+    const Sphere sphere{Vec3{0.0, 0.0, -7.0}, 0.5};
+    const Sphere sphere2{Vec3{-0.8, 0.4, -5.5}, 0.3};
+    const Sphere sphere3{Vec3{-1.4, 0.7, -4.0}, 0.1};
+    std::vector<Sphere> spheres;
+    spheres.reserve(5);
+    spheres.push_back(sphere);
+    spheres.push_back(sphere2);
+    spheres.push_back(sphere3);
+    const Vec3 lightPos{-4.0, 2.0, 2.0};
     
     std::ofstream file("output/image.ppm");
     if (!file) {
@@ -35,20 +45,45 @@ int main(int argc, const char * argv[]) {
             double u = double(col / (imageWidth -1.0));
             double v = double(row / (imageHeight-1.0));
             Ray r = cam.getRay(u, v);
+            double closestT = -1.0;
+            const Sphere* closestSphere = nullptr;
             
-            if (sphere.hit(r)){
-                //std::cout << " We have red at row " << row << " col " << col << "\n";
-                //int red = col % 256;  // Red varies with x
-//                int green = row % 256;  // Green varies with y
-//                int blue = 128;      // Blue stays constant
-                //file << red << " " << green << " " << blue << "  ";
-                file << "255 0 0\n";
+            for (const Sphere& s : spheres){
+ 
+                double t = s.hit(r); // ray parameter: distance along ray to hit point
+                
+                if (t > 0 && (closestT < 0 || t < closestT)){ //
+                    closestT = t;
+                    closestSphere = &s;
+                }
+            }
+            
+            if (closestT > 0) {
+                Vec3 P = r.origin + r.direction * closestT; // point of hit
+                Vec3 N = (P - closestSphere->center).normalize(); // normal
+                Vec3 lightDir = (lightPos - P).normalize(); // direction of light it goes from point of hit to lightPos
+                Ray shadowRay = Ray{P + N * shadowAcne, lightDir};
+                
+                bool inShadow = false;
+                for (const Sphere& s : spheres) {
+                    double t = s.hit(shadowRay);
+                    if (t > 0) {
+                        inShadow = true;
+                        break;
+                    }
+                }
+                
+                
+                double brightness;
+                if (inShadow) {
+                    brightness = ambient; 
+                } else {
+                    brightness = std::min(1.0, ambient + std::max(0.0, N.dot(lightDir))); // brightness is defined by cos of angle between normal and lightdir
+                }
+                int b = int(brightness * 255);
+                Color color{b, b, b};
+                file << color.r << " " << color.g << " " << color.b << "\n";
             } else {
-                //std::cout << " We have blue at row " << row << " col " << col << "\n";
-//                int red = 128;          // Red stays constant
-//                int green = row % 256;  // Green varies with row
-//                int blue = col % 256;      // Blue varies with col
-//                file << red << " " << green << " " << blue << "  ";
                 file << "0 0 255\n";
             }
         }
