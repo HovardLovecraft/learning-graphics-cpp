@@ -2,6 +2,7 @@
 DerivedData/
 build/
 xcuserdata/
+*.xcodeproj/
 
 # macOS
 .DS_Store
