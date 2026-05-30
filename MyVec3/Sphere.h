@@ -9,7 +9,6 @@
 #define Sphere_h
 
 #include <cmath>
-#include <iostream>
 #include "Vec3.h"
 #include "Ray.h"
 
