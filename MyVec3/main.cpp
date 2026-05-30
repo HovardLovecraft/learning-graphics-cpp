@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "Vec3.h"
 #include "Ray.h"
 #include "Sphere.h"
