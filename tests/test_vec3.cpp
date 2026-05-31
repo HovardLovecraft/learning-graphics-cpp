@@ -53,3 +53,12 @@ TEST_CASE("Vec3 normalize") {
     CHECK(result.y == doctest::Approx(0.8).epsilon(1e-9));
     CHECK(result.z == doctest::Approx(0.0).epsilon(1e-9));
 }
+
+TEST_CASE("Vec3 ray direction down and right, reflection goes up and right") {
+    Vec3 ray{1.0, -1.0, 0.0};
+    Vec3 floor{0.0, 1.0, 0.0};
+    Vec3 result = ray.reflect(floor);
+    CHECK(result.x == doctest::Approx(1.0).epsilon(1e-9));
+    CHECK(result.y == doctest::Approx(1.0).epsilon(1e-9));
+    CHECK(result.z == doctest::Approx(0.0).epsilon(1e-9));
+}
