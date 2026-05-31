@@ -60,6 +60,10 @@ struct Vec3 {
 
         return {x / len, y / len, z / len};
     };
+    
+    Vec3 reflect(const Vec3& N) const {
+        return *this - N * (2.0 * this->dot(N));
+    }
 };
 
 
