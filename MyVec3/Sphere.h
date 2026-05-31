@@ -11,12 +11,14 @@
 #include <cmath>
 #include "Vec3.h"
 #include "Ray.h"
+#include "Material.h"
 
 struct Sphere{
     Vec3 center;
+    Material material;
     double radius;
     
-    Sphere(Vec3 center, double radius) : center(center), radius(radius) {}
+    Sphere(Vec3 center, Material material ,double radius) : center(center), material(material), radius(radius) {}
     
     double hit(const Ray& ray) const {
         double a = ray.direction.dot(ray.direction); //  масштаб кроку променя
