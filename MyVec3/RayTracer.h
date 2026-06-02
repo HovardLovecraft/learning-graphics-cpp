@@ -12,7 +12,7 @@
 #include <vector>
 #include "Sphere.h"
 
-inline std::pair<double, const Sphere*> traceRay(const Ray& r, const std::vector<Sphere>& spheres){
+inline std::pair<double, const Sphere*> traceRay(const Ray& r, const std::vector<Sphere>& spheres, double shadowAcne){
     
     double closestT = -1.0;
     const Sphere* closestSphere = nullptr;
@@ -20,7 +20,7 @@ inline std::pair<double, const Sphere*> traceRay(const Ray& r, const std::vector
     for (const Sphere& s : spheres){
         
         // hit test
-        double t = s.hit(r); // ray parameter: distance along ray to hit point
+        double t = s.hit(r, shadowAcne); // ray parameter: distance along ray to hit point
         
         if (t > 0 && (closestT < 0 || t < closestT)){ //
             closestT = t;
