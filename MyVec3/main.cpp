@@ -67,7 +67,7 @@ int main(int argc, const char * argv[]) {
                 
                 for (int bounce = 0; bounce < maxBounces; ++bounce){
                     
-                    auto [closestT, closestSphere] = traceRay(currentRay, spheres);
+                    auto [closestT, closestSphere] = traceRay(currentRay, spheres, shadowAcne);
                     
                     if (closestT < 0) {
                         break;
@@ -82,7 +82,7 @@ int main(int argc, const char * argv[]) {
                         
                         bool inShadow = false;
                         for (const Sphere& s : spheres) {
-                            double t = s.hit(shadowRay);
+                            double t = s.hit(shadowRay, shadowAcne);
                             if (t > 0) {
                                 inShadow = true;
                                 break;
