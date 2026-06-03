@@ -33,4 +33,19 @@ inline std::pair<double, const Sphere*> traceRay(const Ray& r, const std::vector
     
 }
 
+inline bool isInShadow(const Ray& shadowRay, const Vec3& lightPos, const std::vector<Sphere>& spheres, double shadowAcne) {
+    
+    Vec3 toLight = lightPos - shadowRay.origin;
+    double distanceToLight = toLight.length();
+    
+    for (const Sphere& s : spheres) {
+        double t = s.hit(shadowRay, shadowAcne);
+        if (t > shadowAcne && t < distanceToLight){
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 #endif /* RayTracer_h */

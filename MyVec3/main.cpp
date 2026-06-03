@@ -80,14 +80,7 @@ int main(int argc, const char * argv[]) {
                         Vec3 lightDir = (lightPos - P).normalize(); // direction of light it goes from point of hit to lightPos
                         Ray shadowRay = Ray{P + N * shadowAcne, lightDir};
                         
-                        bool inShadow = false;
-                        for (const Sphere& s : spheres) {
-                            double t = s.hit(shadowRay, shadowAcne);
-                            if (t > 0) {
-                                inShadow = true;
-                                break;
-                            }
-                        }
+                        bool inShadow = isInShadow(shadowRay, lightPos, spheres, shadowAcne);
                         
                         // brightness
                         double brightness;

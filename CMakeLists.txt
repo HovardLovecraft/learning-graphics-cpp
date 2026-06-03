@@ -15,5 +15,6 @@ add_executable(raytracer_tests
     tests/test_vec3.cpp
     tests/test_sphere.cpp
     tests/test_camera.cpp
+    tests/test_raytracer.cpp
 )
 target_include_directories(raytracer_tests PRIVATE MyVec3)
