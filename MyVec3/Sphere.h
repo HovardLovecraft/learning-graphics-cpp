@@ -18,7 +18,7 @@ struct Sphere{
     Material material;
     double radius;
     
-    Sphere(Vec3 center, Material material ,double radius) : center(center), material(material), radius(radius) {}
+    Sphere(Vec3 center, Material material, double radius) : center(center), material(material), radius(radius) {}
     
     double hit(const Ray& ray, double shadowAcne) const {
         Vec3 oc = ray.origin - center; // vector from sphere center to ray origin
