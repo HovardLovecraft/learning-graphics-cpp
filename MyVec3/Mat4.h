@@ -8,6 +8,7 @@
 #ifndef Mat4_h
 #define Mat4_h
 
+#include <cmath>
 #include "Vec3.h"
 
 struct Mat4 {
@@ -109,6 +110,23 @@ struct Mat4 {
         m.matrix[3][1] = 0.0;
         m.matrix[3][2] = 0.0;
         m.matrix[3][3] = 1.0;
+
+        return m;
+    }
+
+    static Mat4 perspective(double fov, double aspect, double near, double far) {
+        
+        Mat4 m = Mat4::zero();
+
+        if (aspect == 0) return m;
+
+        double f = 1/tan(fov* (M_PI / 180)/2);
+
+        m.matrix[0][0] = f / aspect; // scaling point of view (Scale X)
+        m.matrix[1][1] = f; // Scale Y
+        m.matrix[2][2] = -(far+near)/(far-near); // This is needed by the GPU to know "how far away" each pixel is in the normalized space.
+        m.matrix[2][3] = -2*far*near/(far-near); // This is needed by the GPU to know "how far away" each pixel is in the normalized space.
+        m.matrix[3][2] = -1; // heart of perspective 
 
         return m;
     }

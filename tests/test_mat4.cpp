@@ -151,3 +151,20 @@ TEST_CASE("Look At Matrix results as Identity Matrix with standart camera positi
         }
     }
 }
+
+TEST_CASE("Perspective Matrix with standard data") {
+    
+    Mat4 m;
+    double fov = 90.0;
+    double aspect = 1.0;
+    double near = 2.0; // camera -> | near | ->  rendered  -> | far | -> no render happening
+    double far = 10.0;
+
+    Mat4 got = m.perspective(fov, aspect, near, far);
+
+    CHECK(got.matrix[0][0] == doctest::Approx(1.0).epsilon(1e-9));
+    CHECK(got.matrix[1][1] == doctest::Approx(1.0).epsilon(1e-9));
+    CHECK(got.matrix[2][2] == doctest::Approx(-1.5).epsilon(1e-9));
+    CHECK(got.matrix[2][3] == doctest::Approx(-5.0).epsilon(1e-9));
+    CHECK(got.matrix[3][2] == doctest::Approx(-1.0).epsilon(1e-9));
+}
