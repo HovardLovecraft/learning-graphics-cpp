@@ -85,6 +85,33 @@ struct Mat4 {
 
         return m;
     }
+
+    static Mat4 lookAt(Vec3 eye, Vec3 target, Vec3 up) {
+        
+        Mat4 m;
+        Vec3 forward = (target - eye).normalize();
+        Vec3 right = forward.cross(up).normalize();
+        Vec3 up_corrected = right.cross(forward);
+
+        m.matrix[0][0] = right.x;
+        m.matrix[0][1] = right.y;
+        m.matrix[0][2] = right.z;
+        m.matrix[0][3] = -right.dot(eye);
+        m.matrix[1][0] = up_corrected.x;
+        m.matrix[1][1] = up_corrected.y;
+        m.matrix[1][2] = up_corrected.z;
+        m.matrix[1][3] = -up_corrected.dot(eye);
+        m.matrix[2][0] = -forward.x;
+        m.matrix[2][1] = -forward.y;
+        m.matrix[2][2] = -forward.z;
+        m.matrix[2][3] = forward.dot(eye);
+        m.matrix[3][0] = 0.0;
+        m.matrix[3][1] = 0.0;
+        m.matrix[3][2] = 0.0;
+        m.matrix[3][3] = 1.0;
+
+        return m;
+    }
 };
 
 

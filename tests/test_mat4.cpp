@@ -132,3 +132,22 @@ TEST_CASE("Matrix multiplication validate multiplication on Identity matrix does
         }
     }
 }
+
+TEST_CASE("Look At Matrix results as Identity Matrix with standart camera positions"){
+        
+    Mat4 m;
+    Vec3 eye = {0.0, 0.0, 0.0};
+    Vec3 target = {0.0, 0.0, -1.0};
+    Vec3 up = {0.0, 1.0, 0.0};
+
+    Mat4 got = m.lookAt(eye, target, up);
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            if (row == col) {
+                CHECK(got.matrix[row][col] == doctest::Approx(1.0).epsilon(1e-9));
+            } else {
+                CHECK(got.matrix[row][col] == doctest::Approx(0.0).epsilon(1e-9));
+            }
+        }
+    }
+}
