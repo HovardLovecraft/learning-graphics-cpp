@@ -10,6 +10,7 @@
 #include <random>
 #include <utility>
 #include <vector>
+#include "Mat4.h"
 #include "Vec3.h"
 #include "Ray.h"
 #include "RayTracer.h"
@@ -21,6 +22,7 @@
 
 int main(int argc, const char * argv[]) {
     
+    // Scene configuration
     const int imageWidth{800};
     const int imageHeight{600};
     const int samplesPerPixel = 16;
@@ -28,10 +30,21 @@ int main(int argc, const char * argv[]) {
     const double ambient = 0.25;
     const double shadowAcne = 0.001;
     const Vec3 lightPos{-4.0, 2.0, 2.0};
+
+    //Camera
+    Vec3 eye = Vec3{0,0,0};
+    Vec3 target = Vec3{0,0,-1};
+    Vec3 upDir = Vec3{0,1,0};
+    double fov{90.0};
+    double aspect{double(imageWidth) / imageHeight};
+    double near{0.1};
+    double far{100.0};
+    Camera cam{eye, target, upDir, fov, aspect, near, far};
+
+    //Objects 
     const Material gloss{Vec3(1.0, 0.0, 0.0), 0.8};
     const Material mat{Vec3(0.7, 0.7, 0.7), 0.5};
     const Material blacky{Vec3(0.1, 0.1, 0.1), 0.05};
-    const Camera cam{Vec3{0.0, 0.0, 1.5}, 3.0, 3.0, 3.0};
     const Sphere sphere{Vec3{0.0, 0.0, -7.0}, gloss, 0.5};
     const Sphere sphere2{Vec3{-0.8, 0.4, -5.5}, mat, 0.3};
     const Sphere sphere3{Vec3{-1.4, 0.7, -4.0}, blacky, 0.1};
