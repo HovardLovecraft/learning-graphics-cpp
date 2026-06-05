@@ -119,3 +119,16 @@ TEST_CASE("scale() transforms unit vector correctly"){
     CHECK(got.y == doctest::Approx(initial.y).epsilon(1e-9));
     CHECK(got.z == doctest::Approx(initial.z).epsilon(1e-9));
 }
+
+TEST_CASE("Matrix multiplication validate multiplication on Identity matrix doesn't change matrix"){
+
+    Mat4 m;
+
+    Mat4 got = m * m;  
+
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            CHECK(got.matrix[row][col] == doctest::Approx(m.matrix[row][col]).epsilon(1e-9));
+        }
+    }
+}

@@ -57,6 +57,34 @@ struct Mat4 {
         
         return m;
     }
+
+    static Mat4 zero() {
+        
+        Mat4 m;
+        
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++){
+                m.matrix[i][j] = 0.0;
+            }
+        }
+        
+        return m;      
+    }
+
+    Mat4 operator*(const Mat4& other) const {
+        
+        Mat4 m = Mat4::zero();
+
+        for(int row{0}; row<4; ++row) {
+            for(int col{0}; col < 4; ++col) {
+                for (int k{0}; k < 4; ++k) {
+                    m.matrix[row][col]+= matrix[row][k]*other.matrix[k][col];
+                }
+            }
+        }
+
+        return m;
+    }
 };
 
 
