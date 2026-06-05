@@ -10,6 +10,7 @@
 #include <random>
 #include <utility>
 #include <vector>
+#include "Mat4.h"
 #include "Vec3.h"
 #include "Ray.h"
 #include "RayTracer.h"
