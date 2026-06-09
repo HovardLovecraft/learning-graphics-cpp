@@ -173,3 +173,30 @@ TEST_CASE("Perspective Matrix with standard data") {
     CHECK(got.matrix[2][3] == doctest::Approx(-5.0).epsilon(1e-9));
     CHECK(got.matrix[3][2] == doctest::Approx(-1.0).epsilon(1e-9));
 }
+
+TEST_CASE("rotate Y-axxis on 90 degrees transforms (1,0,0) to (0,0,-1)") {
+    Mat4 m = Mat4::rotateY(90.0);
+    Vec4 result = m.transform(Vec3{1, 0, 0}, 1.0);
+
+    CHECK(result.x == doctest::Approx(0.0).epsilon(1e-9));
+    CHECK(result.y == doctest::Approx(0.0).epsilon(1e-9));
+    CHECK(result.z == doctest::Approx(-1.0).epsilon(1e-9));
+}
+
+TEST_CASE("rotate X-axxis on 90 degrees transforms (0,1,0) to (0,0,1)") {
+    Mat4 m = Mat4::rotateX(90.0);
+    Vec4 result = m.transform(Vec3{0, 1, 0}, 1.0);
+    
+    CHECK(result.x == doctest::Approx(0.0).epsilon(1e-9));
+    CHECK(result.y == doctest::Approx(0.0).epsilon(1e-9));
+    CHECK(result.z == doctest::Approx(1.0).epsilon(1e-9));
+}
+
+TEST_CASE("rotate Z-axxis on 90 degrees transforms (1,0,0) to (0,1,0)") {
+    Mat4 m = Mat4::rotateZ(90.0);
+    Vec4 result = m.transform(Vec3{1, 0, 0}, 1.0);
+    
+    CHECK(result.x == doctest::Approx(0.0).epsilon(1e-9));
+    CHECK(result.y == doctest::Approx(1.0).epsilon(1e-9));
+    CHECK(result.z == doctest::Approx(0.0).epsilon(1e-9));
+}

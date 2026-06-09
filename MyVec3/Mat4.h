@@ -131,6 +131,44 @@ struct Mat4 {
 
         return m;
     }
+
+    static Mat4 rotateY(double angleDeg){
+        
+        Mat4 m;
+
+        m.matrix[0][0] = std::cos(angleDeg * M_PI / 180.0);
+        m.matrix[0][2] = std::sin(angleDeg * M_PI / 180.0);
+        m.matrix[2][0] = -std::sin(angleDeg * M_PI / 180.0);
+        m.matrix[2][2] = std::cos(angleDeg * M_PI / 180.0);
+
+        return m;
+    }
+
+    static Mat4 rotateX(double angleDeg){
+        
+        Mat4 m;
+
+        m.matrix[1][1] = std::cos(angleDeg * M_PI / 180.0);
+        m.matrix[1][2] = -std::sin(angleDeg * M_PI / 180.0);
+        m.matrix[2][1] = std::sin(angleDeg * M_PI / 180.0);
+        m.matrix[2][2] = std::cos(angleDeg * M_PI / 180.0);
+
+        return m;
+    }
+
+        static Mat4 rotateZ(double angleDeg){
+        
+        Mat4 m;
+
+        m.matrix[0][0] = std::cos(angleDeg * M_PI / 180.0);
+        m.matrix[0][1] = -std::sin(angleDeg * M_PI / 180.0);
+        m.matrix[1][0] = std::sin(angleDeg * M_PI / 180.0);
+        m.matrix[1][1] = std::cos(angleDeg * M_PI / 180.0);
+
+        return m;
+    }
+
+
 };
 
 

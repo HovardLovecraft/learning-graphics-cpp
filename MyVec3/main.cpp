@@ -44,7 +44,7 @@ int main(int argc, const char * argv[]) {
     double far{100.0};
     Camera cam{eye, target, upDir, fov, aspect, near, far};
     Framebuffer fb(imageWidth, imageHeight);
-    Mat4 M = Mat4::translate(0, 0, -3);   // cube in front of the camera
+    Mat4 M = Mat4::translate(0, 0, -3) * Mat4::rotateZ(30.0);
     Mat4 V = Mat4::lookAt(
         Vec3{2.0, 1.5, 2.0},  // camera located from the side and above
         Vec3{0.0, 0.0, -2.0}, // look at cube
@@ -81,7 +81,7 @@ int main(int argc, const char * argv[]) {
     
     const Scene scene{imageWidth, imageHeight, samplesPerPixel, maxBounces, ambient, shadowAcne, lightPos, cam, spheres};
     render(scene, "output/image.ppm");
-    rasterize(fb, cube, MVP);
+    rasterize(fb, cube, MVP, Vec3{2.0, 1.5, 2.0});
     fb.savePPM("output/rasterized_image.ppm");
     
     return EXIT_SUCCESS;
