@@ -13,7 +13,7 @@
 #include "Mat4.h"
 #include "Vec4.h"
 
-void rasterize(Framebuffer& fb, const Cube& cube, const Mat4& MVP) {
+void rasterize(Framebuffer& fb, const Cube& cube, const Mat4& MVP, Vec3 cameraPos) {
     Vec4 v1;
     Vec4 v2;
     Vec4 v3;
@@ -61,8 +61,16 @@ void rasterize(Framebuffer& fb, const Cube& cube, const Mat4& MVP) {
         int maxY = std::min(fb.height - 1, std::max(screen_y1, std::max(screen_y2, screen_y3)));
 
         double totalArea = edgeFunc(screen_x1, screen_y1, screen_x2, screen_y2, screen_x3, screen_y3);
-        Vec3 lightDir = Vec3{1, 2, 0.5}.normalize();
-        double brightness = std::max(0.0, t.normal.dot(lightDir));
+        Vec3 lightDir = cameraPos.normalize();
+        double ambient = 0.15;
+        double diffuse = std::max(0.0, t.normal.dot(lightDir));
+
+        Vec3 centroid = (t.A + t.B + t.C) / 3.0;
+        Vec3 V = (cameraPos - centroid).normalize();
+        Vec3 R = t.normal * (2.0 * t.normal.dot(lightDir)) - lightDir;
+        Vec3 H = (lightDir + V).normalize();
+        double spec = pow(std::max(0.0, t.normal.dot(H)), 8.0);
+        double brightness = ambient + 0.6 * diffuse + 0.4 * spec;
 
         for (int i = minY; i <= maxY; ++i){
             for (int j = minX; j <= maxX; ++j){

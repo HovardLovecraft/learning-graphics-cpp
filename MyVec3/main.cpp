@@ -81,7 +81,7 @@ int main(int argc, const char * argv[]) {
     
     const Scene scene{imageWidth, imageHeight, samplesPerPixel, maxBounces, ambient, shadowAcne, lightPos, cam, spheres};
     render(scene, "output/image.ppm");
-    rasterize(fb, cube, MVP);
+    rasterize(fb, cube, MVP, Vec3{2.0, 1.5, 2.0});
     fb.savePPM("output/rasterized_image.ppm");
     
     return EXIT_SUCCESS;
