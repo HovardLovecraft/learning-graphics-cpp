@@ -10,10 +10,13 @@
 #include <random>
 #include <utility>
 #include <vector>
+#include "Cube.h"
+#include "Framebuffer.h"
 #include "Mat4.h"
 #include "Vec3.h"
 #include "Ray.h"
 #include "RayTracer.h"
+#include "Rasterizer.h"
 #include "Sphere.h"
 #include "Camera.h"
 #include "Color.h"
@@ -40,6 +43,15 @@ int main(int argc, const char * argv[]) {
     double near{0.1};
     double far{100.0};
     Camera cam{eye, target, upDir, fov, aspect, near, far};
+    Framebuffer fb(imageWidth, imageHeight);
+    Mat4 M = Mat4::translate(0, 0, -3);   // cube in front of the camera
+    Mat4 V = Mat4::lookAt(
+        Vec3{2.0, 1.5, 2.0},  // camera located from the side and above
+        Vec3{0.0, 0.0, -2.0}, // look at cube
+        Vec3{0, 1, 0}
+    );
+    Mat4 P = Mat4::perspective(60.0, double(imageWidth)/imageHeight, 0.1, 100.0);
+    Mat4 MVP = P * V * M;
 
     //Objects 
     const Material gloss{Vec3(1.0, 0.0, 0.0), 0.8};
@@ -50,6 +62,18 @@ int main(int argc, const char * argv[]) {
     const Sphere sphere3{Vec3{-1.4, 0.7, -4.0}, blacky, 0.1};
     std::vector<Sphere> spheres;
 
+    // Cube
+    const Cube cube{
+        Vec3{-0.5, 0.5, -0.5},
+        Vec3{-0.5, -0.5, 0.5},
+        Vec3{0.5, -0.5, 0.5},
+        Vec3{0.5, 0.5, 0.5}, 
+        Vec3{-0.5, 0.5, 0.5}, 
+        Vec3{-0.5, -0.5, -0.5}, 
+        Vec3{0.5, -0.5, -0.5,}, 
+        Vec3{0.5, 0.5, -0.5}
+    };
+
     spheres.reserve(5);
     spheres.push_back(sphere);
     spheres.push_back(sphere2);
@@ -57,6 +81,8 @@ int main(int argc, const char * argv[]) {
     
     const Scene scene{imageWidth, imageHeight, samplesPerPixel, maxBounces, ambient, shadowAcne, lightPos, cam, spheres};
     render(scene, "output/image.ppm");
+    rasterize(fb, cube, MVP);
+    fb.savePPM("output/rasterized_image.ppm");
     
     return EXIT_SUCCESS;
 }
