@@ -10,6 +10,7 @@
 
 #include <cmath>
 #include "Vec3.h"
+#include "Vec4.h"
 
 struct Mat4 {
     double matrix[4][4];
@@ -27,12 +28,12 @@ struct Mat4 {
     }
  
     
-    Vec3 transform(const Vec3& v, double w) const {
-        Vec3 result;
+    Vec4 transform(const Vec3& v, double w) const {
+        Vec4 result;
         result.x = matrix[0][0]*v.x + matrix[0][1]*v.y + matrix[0][2]*v.z + matrix[0][3]*w;
         result.y = matrix[1][0]*v.x + matrix[1][1]*v.y + matrix[1][2]*v.z + matrix[1][3]*w;
         result.z = matrix[2][0]*v.x + matrix[2][1]*v.y + matrix[2][2]*v.z + matrix[2][3]*w;
-        // четвертий рядок відкидаємо
+        result.w = matrix[3][0]*v.x + matrix[3][1]*v.y + matrix[3][2]*v.z + matrix[3][3]*w;
         
         return result;
     }

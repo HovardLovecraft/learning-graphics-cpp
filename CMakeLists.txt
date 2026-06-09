@@ -12,10 +12,13 @@ target_include_directories(raytracer PRIVATE MyVec3)
 # Test executable
 add_executable(raytracer_tests
     tests/test_main.cpp
+    tests/test_cube.cpp
+    tests/test_framebuffer.cpp
     tests/test_vec3.cpp
     tests/test_sphere.cpp
     tests/test_camera.cpp
     tests/test_raytracer.cpp
     tests/test_mat4.cpp
+    tests/test_triangle.cpp 
 )
 target_include_directories(raytracer_tests PRIVATE MyVec3)

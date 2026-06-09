@@ -24,11 +24,12 @@ TEST_CASE("Transform Vec3 with Identity Matrix, Vec3 remains the same"){
     Vec3 initial{1.0, 2.0, 3.0};
     double w = 1.0;
 
-    Vec3 got = m.transform(initial, w);
+    Vec4 got = m.transform(initial, w);
 
     CHECK(got.x == doctest::Approx(initial.x).epsilon(1e-9));
     CHECK(got.y == doctest::Approx(initial.y).epsilon(1e-9));
     CHECK(got.z == doctest::Approx(initial.z).epsilon(1e-9));
+    CHECK(got.w == doctest::Approx(w).epsilon(1e-9));
 }
 
 TEST_CASE("Transform Vec3 with non identity Matrix and w=1, Vec3 changes translation applied"){
@@ -43,11 +44,12 @@ TEST_CASE("Transform Vec3 with non identity Matrix and w=1, Vec3 changes transla
     Vec3 want{4.0, 4.0, 6.0};
     double w = 1.0;
 
-    Vec3 got = m.transform(initial, w);
+    Vec4 got = m.transform(initial, w);
 
     CHECK(got.x == doctest::Approx(want.x).epsilon(1e-9));
     CHECK(got.y == doctest::Approx(want.y).epsilon(1e-9));
     CHECK(got.z == doctest::Approx(want.z).epsilon(1e-9));
+    CHECK(got.w == doctest::Approx(w).epsilon(1e-9));
 }
 
 TEST_CASE("Transform Vec3 with non identity Matrix and w=0, resulted Vec3 changes translation not applied"){
@@ -61,11 +63,12 @@ TEST_CASE("Transform Vec3 with non identity Matrix and w=0, resulted Vec3 change
     Vec3 initial{1.0, 2.0, 3.0};
     double w = 0.0;
     
-    Vec3 got = m.transform(initial, w);
+    Vec4 got = m.transform(initial, w);
 
     CHECK(got.x == doctest::Approx(initial.x).epsilon(1e-9));
     CHECK(got.y == doctest::Approx(initial.y).epsilon(1e-9));
     CHECK(got.z == doctest::Approx(initial.z).epsilon(1e-9));
+    CHECK(got.w == doctest::Approx(w).epsilon(1e-9));
 }
 
 TEST_CASE("translate() sets correct values in last column"){
@@ -87,11 +90,12 @@ TEST_CASE("With w=0, vector has not changed and the direction is not translated"
     Vec3 initial{2.0, 3.0, 4.0};
     double w = 0.0;
 
-    Vec3 got = m.translate(initial.x, initial.y, initial.z).transform(initial, w);
+    Vec4 got = m.translate(initial.x, initial.y, initial.z).transform(initial, w);
 
     CHECK(got.x == doctest::Approx(initial.x).epsilon(1e-9));
     CHECK(got.y == doctest::Approx(initial.y).epsilon(1e-9));
     CHECK(got.z == doctest::Approx(initial.z).epsilon(1e-9));
+    CHECK(got.w == doctest::Approx(w).epsilon(1e-9));
 }
 
 TEST_CASE("scale() sets correct values on diagonal"){
@@ -113,11 +117,12 @@ TEST_CASE("scale() transforms unit vector correctly"){
     Vec3 initial{2.0, 3.0, 4.0};
     double w = 1.0;
 
-    Vec3 got = m.scale(initial.x, initial.y, initial.z).transform(Vec3{1.0, 1.0, 1.0}, w);
+    Vec4 got = m.scale(initial.x, initial.y, initial.z).transform(Vec3{1.0, 1.0, 1.0}, w);
 
     CHECK(got.x == doctest::Approx(initial.x).epsilon(1e-9));
     CHECK(got.y == doctest::Approx(initial.y).epsilon(1e-9));
     CHECK(got.z == doctest::Approx(initial.z).epsilon(1e-9));
+    CHECK(got.w == doctest::Approx(w).epsilon(1e-9));
 }
 
 TEST_CASE("Matrix multiplication validate multiplication on Identity matrix doesn't change matrix"){
